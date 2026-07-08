@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Mission Bauni 💜 — Happy Birthday Sakshi!</title>
+  <meta name="description" content="An interactive birthday mission for Bauni from Shiv — quizzes, mini-games, riddles, cats, and a heartfelt surprise." />
+  <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+  <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Pacifico&display=swap)" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#a55de7" />
+</head>
+<body>
+  <!-- Subtle ambient decorative layers -->
+  <canvas id="bg-rain" aria-hidden="true"></canvas>
+  <canvas id="bg-petals" aria-hidden="true"></canvas>
+  <canvas id="bg-sparkles" aria-hidden="true"></canvas>
+
+  <!-- Loading Screen -->
+  <div id="loader" role="status" aria-live="polite">
+    <div class="glass card load-card">
+      <div class="loader-logo">💜</div>
+      <div class="loader-title">Mission Bauni is booting up…</div>
+      <div class="loader-bar"><span></span></div>
+      <div class="loader-tip">Preparing magic, cats, and cake…</div>
+    </div>
+  </div>
+
+  <!-- Music (optional, starts muted with tap) -->
+  <audio id="bgm" loop preload="auto">
+    <!-- Tiny royalty-free like chime substitute: silent by default; you can replace src -->
+    <source src="" type="audio/mp3">
+  </audio>
+
+  <!-- Floating UI: Progress + Mute -->
+  <div id="hud" class="hidden">
+    <div class="progress">
+      <div class="progress-label">Mission Progress</div>
+      <div class="progress-bar"><span id="progressFill" style="width:0%"></span></div>
+    </div>
+    <button id="soundToggle" class="icon-btn" aria-label="Toggle sound">🔇</button>
+  </div>
+
+  <!-- Cat Sticker Spawner -->
+  <div id="cat-layer" aria-hidden="true"></div>
+
+  <!-- Main App -->
+  <main id="app" class="hidden" aria-live="polite">
+    <!-- Welcome / Intro -->
+    <section class="screen active" data-screen="intro">
+      <div class="glass hero">
+        <h1 class="title">
+          Mission <span class="gradient">Bauni</span> 💜
+        </h1>
+        <p class="subtitle">
+          Classified Operation for: <strong>Sakshi</strong> (aka <strong>Bauni</strong>) — 08 July 2009
+        </p>
+        <div class="hero-visual">
+          <div class="orb orb-1"></div>
+          <div class="orb orb-2"></div>
+          <div class="orb orb-3"></div>
+          <div class="cat-bounce">🐱</div>
+        </div>
+        <p class="desc">
+          Agent <strong>Shiv</strong> (aka <strong>Shivam</strong>) has designed a top‑secret interactive mission:
+          solve friendship puzzles, find sneaky cats, catch cakes, and unlock a final surprise.
+        </p>
+        <button class="btn primary" data-next="quiz">Begin Mission</button>
+        <p class="tiny">Tip: tap anywhere to awaken sparkles. Best experienced with sound.</p>
+      </div>
+    </section>
+
+    <!-- Level 1: Friendship Quiz -->
+    <section class="screen" data-screen="quiz" data-progress="15">
+      <div class="glass card">
+        <h2>Level 1 — Friendship Quiz</h2>
+        <p class="muted">Based on our memories at Sant Sai School.</p>
+
+        <div class="qa">
+          <div class="q">
+            <h3>1) Where did we first meet?</h3>
+            <div class="options" role="group" aria-label="Question 1">
+              <button class="opt" data-correct="true">Sant Sai School</button>
+              <button class="opt">Tuition Class</button>
+              <button class="opt">Playground</button>
+            </div>
+          </div>
+
+          <div class="q">
+            <h3>2) Where did Bauni sit?</h3>
+            <div class="options" role="group" aria-label="Question 2">
+              <button class="opt" data-correct="true">Back bench behind me</button>
+              <button class="opt">Front row</button>
+              <button class="opt">Window seat</button>
+            </div>
+          </div>
+
+          <div class="q">
+            <h3>3) Shiv’s first female friend was…</h3>
+            <div class="options" role="group" aria-label="Question 3">
+              <button class="opt" data-correct="true">Sakshi (Bauni)</button>
+              <button class="opt">Anushka</button>
+              <button class="opt">Priya</button>
+            </div>
+          </div>
+
+          <div class="q">
+            <h3>4) Shiv’s running joke?</h3>
+            <div class="options" role="group" aria-label="Question 4">
+              <button class="opt" data-correct="true">“Find me a girlfriend”</button>
+              <button class="opt">“Do my homework”</button>
+              <button class="opt">“Share your tiffin”</button>
+            </div>
+          </div>
+
+          <div class="q">
+            <h3>5) Which trait fits Bauni?</h3>
+            <div class="options" role="group" aria-label="Question 5">
+              <button class="opt" data-correct="true">Dramatic (adorably!)</button>
+              <button class="opt">Silent monk</button>
+              <button class="opt">Always sleepy</button>
+            </div>
+          </div>
+
+          <div class="q">
+            <h3>6) She sometimes acted like…</h3>
+            <div class="options" role="group" aria-label="Question 6">
+              <button class="opt" data-correct="true">My teacher</button>
+              <button class="opt">My driver</button>
+              <button class="opt">My bodyguard</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz-footer">
+          <div class="status" id="quizStatus">Score: 0 / 6</div>
+          <button class="btn" id="quizReset">Reset</button>
+          <button class="btn primary" id="quizNext" disabled data-next="catch">Proceed</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Level 2: Catch the Cakes -->
+    <section class="screen" data-screen="catch" data-progress="30">
+      <div class="glass card">
+        <h2>Level 2 — Catch the Cakes 🎂</h2>
+        <p class="muted">Move the plate to catch 10 cakes. Avoid broccoli!</p>
+        <div class="game-wrap">
+          <canvas id="catchCanvas" width="360" height="520" role="img" aria-label="Cakes falling mini-game"></canvas>
+        </div>
+        <div class="row">
+          <div class="status">Caught: <span id="cakesCount">0</span> / 10</div>
+          <button class="btn" id="catchRetry">Retry</button>
+          <button class="btn primary" id="catchNext" disabled data-next="cats">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Level 3: Find the Hidden Cats -->
+    <section class="screen" data-screen="cats" data-progress="45">
+      <div class="glass card">
+        <h2>Level 3 — Find the Hidden Cats 🐱</h2>
+        <p class="muted">Find 5 sneaky cats hiding in the scene.</p>
+        <div id="catHunt" class="hunt-grid" role="group" aria-label="Find cats grid"></div>
+        <div class="row">
+          <div class="status">Found: <span id="catsFound">0</span> / 5</div>
+          <button class="btn" id="catsReset">Reset</button>
+          <button class="btn primary" id="catsNext" disabled data-next="gifts">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Level 4: Pick the Right Gift -->
+    <section class="screen" data-screen="gifts" data-progress="60">
+      <div class="glass card">
+        <h2>Level 4 — Open the Correct Gift 🎁</h2>
+        <p class="muted">One gift holds the key. Choose wisely!</p>
+        <div class="gift-row">
+          <button class="gift" data-key="0">🎁</button>
+          <button class="gift" data-key="1">🎁</button>
+          <button class="gift" data-key="2">🎁</button>
+        </div>
+        <div id="giftMsg" class="status"></div>
+        <div class="row">
+          <button class="btn" id="giftShuffle">Shuffle</button>
+          <button class="btn primary" id="giftsNext" disabled data-next="riddles">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Level 5: Riddles -->
+    <section class="screen" data-screen="riddles" data-progress="75">
+      <div class="glass card">
+        <h2>Level 5 — Riddle Round 🧩</h2>
+        <ol class="riddle-list">
+          <li>
+            I speak without a mouth and hear without ears. I have nobody, but I come alive with wind. What am I?
+            <div class="answer">
+              <input type="text" placeholder="Your answer…" data-answer="echo" />
+              <span class="ok" aria-hidden="true">✔</span>
+            </div>
+          </li>
+          <li>
+            I’m not alive, but I grow; I don’t have lungs, but I need air; I don’t have a mouth, and water kills me. What am I?
+            <div class="answer">
+              <input type="text" placeholder="Your answer…" data-answer="fire" />
+              <span class="ok" aria-hidden="true">✔</span>
+            </div>
+          </li>
+          <li>
+            I am yours, but others use me more than you do. What am I?
+            <div class="answer">
+              <input type="text" placeholder="Your answer…" data-answer="name" />
+              <span class="ok" aria-hidden="true">✔</span>
+            </div>
+          </li>
+        </ol>
+        <div class="row">
+          <button class="btn" id="riddleCheck">Check</button>
+          <button class="btn primary" id="riddlesNext" disabled data-next="password">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Level 6: Final Password -->
+    <section class="screen" data-screen="password" data-progress="90">
+      <div class="glass card">
+        <h2>Final Gate — Password 🔐</h2>
+        <p class="muted">
+          Hint: Combine your nickname + a heart + your birth day number (e.g., Bauni💜8).
+        </p>
+        <div class="answer big">
+          <input id="pwd" type="text" placeholder="Enter final password…" inputmode="text" />
+        </div>
+        <div id="pwdMsg" class="status"></div>
+        <div class="row">
+          <button class="btn primary" id="pwdGo" data-next="letter">Unlock</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Finale: Typewriter Letter + Fireworks + Coupon -->
+    <section class="screen" data-screen="letter" data-progress="100">
+      <div class="glass letter">
+        <h2 class="script">For my favorite human — Bauni 💜</h2>
+        <div id="typewriter" class="type"></div>
+        <div id="finalActions" class="center hidden">
+          <button class="btn primary" id="celebrate">Mission Complete 🎉</button>
+          <button class="btn" id="couponBtn">Bonus Reward 🎟️</button>
+        </div>
+      </div>
+      <canvas id="fireworks" aria-hidden="true"></canvas>
+
+      <dialog id="coupon" class="glass coupon">
+        <h3>Friendship Coupon</h3>
+        <p>This coupon entitles <strong>Sakshi (Bauni)</strong> to:</p>
+        <ul>
+          <li>1x Emergency Meme Delivery 📲</li>
+          <li>1x Unlimited Dramatic Vent Session 🎭</li>
+          <li>1x “Find me a girlfriend” joke immunity pass 😂</li>
+          <li>1x Surprise Treat — cake or pani puri, your pick! 🎂</li>
+        </ul>
+        <p class="muted tiny">Valid forever. Redeemable with Agent Shiv only.</p>
+        <form method="dialog">
+          <button class="btn primary">Got it 💜</button>
+        </form>
+      </dialog>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
