@@ -241,14 +241,12 @@ function spawnTargetCake() {
     cake.className = 'target-cake';
     cake.innerHTML = '🎂';
     
-    // Calculate randomized placement boundaries within the safe zone
     const x = Math.random() * (canvas.clientWidth - 50) + 25;
     const y = Math.random() * (canvas.clientHeight - 50) + 25;
     
     cake.style.left = `${x}px`;
     cake.style.top = `${y}px`;
 
-    // Handle high-response interaction for mobile touch & pointer systems
     const pointerHandler = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -321,9 +319,9 @@ function handleDestinyChoice() {
     }, 600);
 
     setTimeout(() => {
-        // Clean transformation vectors for level 5 migration
         selected.className = 'destiny-box';
         selected.innerHTML = '🎁';
+        siblings.forEach(box => box.style.pointerEvents = 'auto'); // FIXED: Restores pointer capabilities globally
         navigateToScreen('level5Screen');
     }, 2000);
 }
@@ -366,7 +364,6 @@ function renderLetterSequentially() {
         lineElement.style.animationDelay = `${delay}s`;
         container.appendChild(lineElement);
         
-        // Accumulate baseline reading latency
         delay += 1.8; 
     });
 
